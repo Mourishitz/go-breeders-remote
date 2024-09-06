@@ -2,10 +2,12 @@ package main
 
 import (
 	"flag"
-	"go-breeders-remote/configuration"
 	"log"
 	"net/http"
+	"os"
 	"time"
+
+	"go-breeders-remote/configuration"
 )
 
 const port = ":8081"
@@ -26,8 +28,11 @@ type appConfig struct {
 func main() {
 	var config appConfig
 
+	// Env or default value
+	dsn := os.Getenv("DSN")
+
 	// read command line parameters, if any, and set sensible defaults for development
-	flag.StringVar(&config.dsn, "dsn", "mariadb:myverysecretpassword@tcp(localhost:3306)/breeders?parseTime=true&tls=false&collation=utf8_unicode_ci&timeout=5s&readTimeout5", "DSN")
+	flag.StringVar(&config.dsn, "dsn", dsn, "DSN")
 	flag.Parse()
 
 	// get database
